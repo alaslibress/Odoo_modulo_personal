@@ -1,5 +1,5 @@
 {
-    'name': "modulo-alejandro",
+    'name': "modulo_alejandro",
     'summary': "El primer modulo de la clase de SGE",
     'description': "Este modulo ha sido creado con scaffolding y esta sincronizado en mi repositorio Github",
     'author': "Alejandro Pozo",
