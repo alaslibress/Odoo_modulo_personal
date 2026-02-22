@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <!-- =======================================================
+         VISTAS DE PELICULAS (videoclub.pelis)
+         ======================================================= -->
+
+    <!-- VISTA ARBOL (tree) de Peliculas -->
+    <record model="ir.ui.view" id="videoclub_sge.pelis_arbol">
+        <field name="name">videoclub_sge.pelis_arbol</field>
+        <field name="model">videoclub.pelis</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="titulo"/>
+                <field name="director"/>
+                <field name="clasificacion"/>
+                <field name="presupuesto"/>
+                <field name="fechaestreno"/>
+                <field name="categoria_id"/>
+                <field name="millonario"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- VISTA FORMULARIO (form) de Peliculas -->
+    <record model="ir.ui.view" id="videoclub_sge.pelis_formulario">
+        <field name="name">videoclub_sge.pelis_formulario</field>
+        <field name="model">videoclub.pelis</field>
+        <field name="arch" type="xml">
+            <form string="pelis">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="titulo" placeholder="Titulo de la pelicula"/>
+                        </h1>
+                    </div>
+                    <group string="DATOS DE PELIS">
+                        <group string="Datos Principales">
+                            <field name="titulo"/>
+                            <field name="director"/>
+                            <field name="clasificacion"/>
+                            <field name="categoria_id"/>
+                        </group>
+                        <group string="Datos Economicos">
+                            <field name="presupuesto"/>
+                            <field name="fechaestreno"/>
+                            <field name="subvencionado" readonly="1"/>
+                            <field name="invertido" readonly="1"/>
+                            <field name="millonario" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Compania y Foto">
+                        <group>
+                            <field name="compania"/>
+                        </group>
+                        <group>
+                            <field name="foto" widget="image" class="oe_avatar"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- VISTA SEARCH (busqueda) de Peliculas -->
+    <record model="ir.ui.view" id="videoclub_sge.pelis_busqueda">
+        <field name="name">videoclub_sge.pelis_busqueda</field>
+        <field name="model">videoclub.pelis</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="titulo" string="Titulo"/>
+                <field name="director" string="Director"/>
+                <field name="categoria_id" string="Categoria"/>
+                <filter string="Millonarias" name="millonarias"
+                        domain="[('presupuesto','&gt;',1000000)]"/>
+                <filter string="Todos los Publicos" name="tp"
+                        domain="[('clasificacion','=','TP')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Clasificacion" name="group_clasificacion"
+                            context="{'group_by':'clasificacion'}"/>
+                    <filter string="Categoria" name="group_categoria"
+                            context="{'group_by':'categoria_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- VISTA KANBAN de Peliculas (con imagen) -->
+    <record model="ir.ui.view" id="videoclub_sge.pelis_kanban">
+        <field name="name">videoclub_sge.pelis_kanban</field>
+        <field name="model">videoclub.pelis</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="titulo"/>
+                <field name="director"/>
+                <field name="clasificacion"/>
+                <field name="presupuesto"/>
+                <field name="foto"/>
+                <field name="categoria_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('videoclub.pelis', 'foto', record.id.raw_value)"
+                                     class="o_image_64_cover" alt="Foto"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="titulo"/>
+                                </strong>
+                                <div>Director: <field name="director"/></div>
+                                <div>Clasificacion: <field name="clasificacion"/></div>
+                                <div>Presupuesto: <field name="presupuesto"/> EUR</div>
+                                <div>Categoria: <field name="categoria_id"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- =======================================================
+         VISTAS DE CATEGORIAS (videoclub.categorias)
+         ======================================================= -->
+
+    <!-- VISTA ARBOL de Categorias -->
+    <record model="ir.ui.view" id="videoclub_sge.categorias_arbol">
+        <field name="name">videoclub_sge.categorias_arbol</field>
+        <field name="model">videoclub.categorias</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="descripcion"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- VISTA FORMULARIO de Categorias -->
+    <record model="ir.ui.view" id="videoclub_sge.categorias_formulario">
+        <field name="name">videoclub_sge.categorias_formulario</field>
+        <field name="model">videoclub.categorias</field>
+        <field name="arch" type="xml">
+            <form string="categoria">
+                <group string="DATOS DE CATEGORIA">
+                    <field name="name"/>
+                    <field name="descripcion"/>
+                </group>
+                <group string="PELICULAS EN ESTA CATEGORIA">
+                    <field name="pelis_ids">
+                        <tree>
+                            <field name="titulo"/>
+                            <field name="director"/>
+                            <field name="presupuesto"/>
+                        </tree>
+                    </field>
+                </group>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- =======================================================
+         VISTAS DE COMPANIAS CINEMATOGRAFICAS (hereda res.partner)
+         ======================================================= -->
+
+    <!-- VISTA ARBOL de Companias (solo nombre y premiada) -->
+    <record model="ir.ui.view" id="videoclub_sge.companias_arbol">
+        <field name="name">videoclub_sge.companias_arbol</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="premiada"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- VISTA FORMULARIO de Companias (hereda de res.partner con mode primary) -->
+    <record model="ir.ui.view" id="videoclub_sge.companias_formulario">
+        <field name="name">videoclub_sge.companias_formulario</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <!-- Anadimos pestana Videoclub despues de notas internas -->
+            <xpath expr="//sheet/notebook/page[@name='internal_notes']" position="after">
+                <page name="videoclub" string="Videoclub">
+                    <group>
+                        <group>
+                            <field name="premiada"/>
+                        </group>
+                        <group>
+                            <field name="is_cine" invisible="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- =======================================================
+         ACCIONES DE VENTANA
+         ======================================================= -->
+
+    <!-- Accion de ventana para Peliculas -->
+    <record model="ir.actions.act_window" id="videoclub_sge.pelis_ventana">
+        <field name="name">Peliculas</field>
+        <field name="res_model">videoclub.pelis</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <h1>VIDEOCLUB</h1>
+            <p>LISTA DE PELIS VACIA</p>
+        </field>
+    </record>
+
+    <!-- Accion de ventana para Categorias -->
+    <record model="ir.actions.act_window" id="videoclub_sge.categorias_ventana">
+        <field name="name">Categorias</field>
+        <field name="res_model">videoclub.categorias</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>No hay categorias creadas aun.</p>
+        </field>
+    </record>
+
+    <!-- Accion de ventana para Companias (solo las de cine) -->
+    <record model="ir.actions.act_window" id="videoclub_sge.companias_ventana">
+        <field name="name">Companias</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_cine','=',True)]</field>
+        <field name="context">{'default_is_cine':True}</field>
+    </record>
+
+    <!-- Vincular vista arbol personalizada a accion de companias -->
+    <record model="ir.actions.act_window.view" id="videoclub_sge.companias_ventana_view_arbol">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="videoclub_sge.companias_arbol"/>
+        <field name="act_window_id" ref="videoclub_sge.companias_ventana"/>
+    </record>
+
+    <!-- Vincular vista formulario heredada a accion de companias -->
+    <record model="ir.actions.act_window.view" id="videoclub_sge.companias_ventana_view_formulario">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="videoclub_sge.companias_formulario"/>
+        <field name="act_window_id" ref="videoclub_sge.companias_ventana"/>
+    </record>
+
+
+    <!-- =======================================================
+         MENUS
+         ======================================================= -->
+
+    <!-- Menu raiz: VIDEOCLUB -->
+    <menuitem name="VIDEOCLUB" id="videoclub_sge.menu_root"/>
+
+    <!-- Submenu: Gestion Pelis -->
+    <menuitem name="Gestion Pelis" id="videoclub_sge.gestion_pelis"
+              parent="videoclub_sge.menu_root"/>
+    <menuitem name="Pelis" id="videoclub_sge.menu_pelis"
+              parent="videoclub_sge.gestion_pelis"
+              action="videoclub_sge.pelis_ventana"/>
+    <menuitem name="Categorias" id="videoclub_sge.menu_categorias"
+              parent="videoclub_sge.gestion_pelis"
+              action="videoclub_sge.categorias_ventana"/>
+
+    <!-- Submenu: Gestion Companias -->
+    <menuitem name="Gestion companias" id="videoclub_sge.gestion_companias"
+              parent="videoclub_sge.menu_root"/>
+    <menuitem name="Companias" id="videoclub_sge.menu_companias"
+              parent="videoclub_sge.gestion_companias"
+              action="videoclub_sge.companias_ventana"/>
+
+</data>
+</odoo>

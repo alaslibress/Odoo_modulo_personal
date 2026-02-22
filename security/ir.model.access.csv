@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_videoclub_sge_pelis_jefe,Jefe de Pelis,videoclub_sge.model_videoclub_pelis,videoclub_sge.videoclub_jefe,1,1,1,1
+access_videoclub_sge_pelis_becario,Becario de Pelis,videoclub_sge.model_videoclub_pelis,videoclub_sge.videoclub_becario,1,1,0,0
+access_videoclub_sge_categorias_jefe,Jefe de Categorias,videoclub_sge.model_videoclub_categorias,videoclub_sge.videoclub_jefe,1,1,1,1
+access_videoclub_sge_categorias_becario,Becario Categorias Lectura,videoclub_sge.model_videoclub_categorias,videoclub_sge.videoclub_becario,1,0,0,0

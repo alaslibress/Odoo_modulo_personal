@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Grupo para jefes del videoclub: acceso total -->
+    <record id="videoclub_jefe" model="res.groups">
+        <field name="name">Videoclub / Jefe</field>
+    </record>
+
+    <!-- Grupo para becarios del videoclub: acceso limitado -->
+    <record id="videoclub_becario" model="res.groups">
+        <field name="name">Videoclub / Becario</field>
+    </record>
+</odoo>
